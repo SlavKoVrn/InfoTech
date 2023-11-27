@@ -9,5 +9,12 @@ return [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@backend/views' => '@vendor/hail812/yii2-adminlte3/src/views'
+                ],
+            ],
+        ],
     ],
 ];
