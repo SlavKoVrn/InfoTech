@@ -1,3 +1,15 @@
+<h1 align="center">Тестовое задание</h1>
+
+<a href="http://apple.kadastrcard.ru/admin" target="_blank">http://apple.kadastrcard.ru/</a>
+```
+login:admin
+password:123456
+```
+
+Установить advanced шаблон Yii2 фреймворка<br> 
+в backend-приложении реализовать следующий закрытый функционал<br/>
+(доступ в backend-приложение должен производиться только по паролю, сложного разделения прав не требуется):
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
