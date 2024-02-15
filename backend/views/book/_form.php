@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
+use kartik\file\FileInput;
 use yii\web\JsExpression;
 use yii\helpers\Url;
 
@@ -13,7 +14,7 @@ use yii\helpers\Url;
 
 <div class="book-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
@@ -45,6 +46,20 @@ use yii\helpers\Url;
             'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
             'templateResult' => new JsExpression('function(data) {return data.text; }'),
             'templateSelection' => new JsExpression('function (data) {  return data.text; }'),
+        ],
+    ]); ?>
+
+    <?= $form->field($model, 'image')->widget(FileInput::class,[
+        'name' => 'image',
+        'attribute' => 'image',
+        'options' => ['accept' => 'image/*'],
+        'pluginOptions' => [
+            'language' => 'ru',
+            'allowedFileExtensions'=>['jpg','gif','png'],
+            'showUpload' => false,
+            'initialPreview' => $model->preview['initialPreview'],
+            'initialPreviewAsData' => true,
+            'initialPreviewConfig' => $model->preview['initialPreviewConfig'],
         ],
     ]); ?>
 

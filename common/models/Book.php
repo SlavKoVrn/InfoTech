@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "books".
@@ -18,6 +19,8 @@ use yii\helpers\ArrayHelper;
 class Book extends \yii\db\ActiveRecord
 {
     public $authors = [];
+    public $image;
+    public $preview;
 
     /**
      * {@inheritdoc}
@@ -37,6 +40,9 @@ class Book extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['name', 'isbn', 'main_page_photo'], 'string', 'max' => 255],
             [['authors'], 'each', 'rule' => ['integer']],
+            [['image'], 'safe'],
+            [['image'], 'file', 'extensions'=>'jpg, gif, png'],
+            [['image'], 'file', 'maxSize'=>'2000000'],
         ];
     }
 
@@ -53,7 +59,29 @@ class Book extends \yii\db\ActiveRecord
             'main_page_photo' => 'Фото главной страницы',
             'description' => 'Описание',
             'authors' => 'Авторы',
+            'image' => 'Фото главной страницы',
         ];
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->preview['initialPreview'] = [];
+        $this->preview['initialPreviewConfig'] = [];
+        $uploadDir = Yii::getAlias('@upload');
+        $file = $uploadDir.'/'.$this->main_page_photo;
+        if (is_file($file)){
+            $this->preview['initialPreview'] = [Yii::$app->getRequest()->getHostInfo().'/upload/'.$this->main_page_photo];
+            $pi = pathinfo($file);
+            $size  = filesize($file);
+            $this->preview['initialPreviewConfig'] = [
+                [
+                    'url' => Url::to(['book/delete-image?key='.$this->id]),
+                    'size' => $size,
+                    'caption' => $pi['basename'],
+                ]
+            ];
+        }
     }
 
     public function afterSave($insert, $changedAttributes)

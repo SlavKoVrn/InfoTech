@@ -11,6 +11,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\db\Query;
+use yii\web\UploadedFile;
+use yii\helpers\FileHelper;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -64,6 +66,46 @@ class BookController extends Controller
         ]);
     }
 
+    private function uploadImage($model)
+    {
+        $image = UploadedFile::getInstance($model, 'image');
+        if ($image){
+            $uploadDir = Yii::getAlias('@upload');
+            $uploadSubDir = Yii::$app->user->id;
+            if (!is_dir($uploadDir .'/'. $uploadSubDir)) {
+                FileHelper::createDirectory($uploadDir .'/'. $uploadSubDir);
+            }
+            $filePath = $uploadDir.'/'.$model->main_page_photo;
+            if (is_file($filePath)){
+                unlink($filePath);
+            }
+            $fileName = $image->baseName . '.' . $image->extension;
+            $filePath = $uploadDir .'/'. $uploadSubDir . '/' . $fileName;
+            $image->saveAs($filePath);
+            $model->main_page_photo = $uploadSubDir . '/' . $fileName;
+            $model->save();
+
+        }
+    }
+
+    public function actionDeleteImage()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $uploadDir = Yii::getAlias('@upload');
+        $book = Book::findOne(Yii::$app->request->get('key'));
+        $filePath = $uploadDir .'/'. $book->main_page_photo;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            $book->main_page_photo = '';
+            $book->save();
+            return ['deleted' => 'OK'];
+        }else{
+            return ['deleted' => 'ERROR'];
+        }
+
+    }
+
     /**
      * Creates a new Book model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -75,6 +117,7 @@ class BookController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                $this->uploadImage($model);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -98,6 +141,7 @@ class BookController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            $this->uploadImage($model);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

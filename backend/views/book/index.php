@@ -38,6 +38,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'format'=>'raw',
+                'label'=>'Фото главной страницы',
+                'value'=>function($model){
+                    return Html::img(Yii::$app->getRequest()->getHostInfo().'/upload/'.$model->main_page_photo,[
+                        'style' => 'max-width:100px',
+                    ]);
+                }
+            ],
+            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Book $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
