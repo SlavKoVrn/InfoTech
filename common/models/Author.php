@@ -36,8 +36,8 @@ class Author extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'fio' => 'Fio',
+            'id' => 'Ид',
+            'fio' => 'ФИО',
         ];
     }
 }

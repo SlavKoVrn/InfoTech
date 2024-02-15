@@ -14,14 +14,6 @@ use yii\web\Response;
  */
 class SiteController extends Controller
 {
-    public function beforeAction($action)
-    {
-        if ($action->id == 'login' or $action->id == 'error'){
-            \Yii::$app->view->theme->pathMap['@backend/views'] = '@backend/views';
-        }
-        return parent::beforeAction($action);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -108,6 +100,6 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect('/');
     }
 }

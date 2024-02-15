@@ -42,12 +42,12 @@ class Book extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'release_year' => 'Release Year',
-            'name' => 'Name',
-            'isbn' => 'Isbn',
-            'main_page_photo' => 'Main Page Photo',
-            'description' => 'Description',
+            'id' => 'Ид',
+            'release_year' => 'Год выпуска',
+            'name' => 'Название',
+            'isbn' => 'ISBN',
+            'main_page_photo' => 'Фото главной страницы',
+            'description' => 'Описание',
         ];
     }
 }
