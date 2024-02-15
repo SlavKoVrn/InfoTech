@@ -29,6 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'fio',
+            [
+                'format'=>'raw',
+                'label'=>'Книги',
+                'value'=>function($model){
+                    return implode('<br/>',$model->bookNames);
+                }
+            ],
         ],
     ]) ?>
 

@@ -32,6 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'isbn',
             'release_year',
             [
+                'label'=>'Авторы',
+                'content'=>function($model){
+                    return implode('<br/>',$model->authorFio);
+                }
+            ],
+            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Book $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);

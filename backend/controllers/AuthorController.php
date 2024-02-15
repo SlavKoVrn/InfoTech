@@ -4,9 +4,12 @@ namespace backend\controllers;
 
 use common\models\Author;
 use common\models\AuthorSearch;
+use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * AuthorController implements the CRUD actions for Author model.
@@ -97,6 +100,8 @@ class AuthorController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $model->books = $model->bookIds;
+
         return $this->render('update', [
             'model' => $model,
         ]);
@@ -131,4 +136,24 @@ class AuthorController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionBooks() {
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $q = Yii::$app->request->get('q');
+        $out = ['results' => ['id' => '', 'text' => '']];
+        if (!is_null($q)) {
+            $query = (new Query)
+                ->select('id, CONCAT_WS(" " ,`isbn`,`name`) AS text')
+                ->from('books')
+                ->where(['like', 'isbn', $q])
+                ->orWhere(['like', 'name', $q]);
+            $command = $query->createCommand();
+            $data = $command->queryAll();
+            $out['results'] = array_values($data);
+        }
+        return $out;
+    }
+
 }
