@@ -50,7 +50,7 @@ class BookController extends Controller
         if ($this->request->isPost and $subscriber->load($this->request->post()) and $subscriber->validate()) {
             $subscriberExists = Subscriber::find()->where(['phone'=>$subscriber->phone])->one();
             if ($subscriberExists){
-                Yii::$app->session->addFlash('warning', $subscriber->humanPhone.' Подписка уже зарегистрирована на '.$subscriber->name);
+                Yii::$app->session->addFlash('warning', $subscriber->humanPhone.' Подписка уже зарегистрирована на '.$subscriberExists->name);
             } elseif ($subscriber->save()) {
                 Yii::$app->session->addFlash('success', $subscriber->humanPhone.' Подписка зарегистрирована');
             }
