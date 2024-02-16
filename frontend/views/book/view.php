@@ -31,6 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             'isbn',
             'release_year',
+            [
+                'format'=>'raw',
+                'label'=>'Авторы',
+                'value'=>function($model){
+                    return implode('<br/>',$model->authorFio);
+                }
+            ],
         ],
     ]) ?>
 
