@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php foreach ($receiptBooks as $book) : ?>
             <tr>
                 <td><?= $book['id'] ?></td>
-                <td><?= Html::a($book['name'],Url::toRoute(['book/view','id'=> $book['id']]),[
+                <td><?= Html::a($book['name'],Url::toRoute(['book/update','id'=> $book['id']]),[
                         'target' => '_blank',
                     ]) ?></td>
                 <td><?= $book['isbn'] ?></td>
