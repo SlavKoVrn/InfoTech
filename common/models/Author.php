@@ -56,7 +56,8 @@ class Author extends \yii\db\ActiveRecord
     public function getCurrentBooks()
     {
         return $this->hasMany(Book::class, ['id' => 'book_id'])
-            ->viaTable(BookAuthor::tableName(), ['author_id' => 'id']);
+            ->viaTable(BookAuthor::tableName(), ['author_id' => 'id'])
+            ->orderBy(['books.release_year' => SORT_ASC]);
     }
 
     public function getBookIds()

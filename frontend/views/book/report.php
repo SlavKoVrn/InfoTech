@@ -47,9 +47,9 @@ use yii\widgets\ActiveForm;
             <td><?= $author['fio'] ?></td>
             <td><?= $author['book_count'] ?></td>
             <td>
-                <?php foreach ($author['currentBooks'] as $book) : ?>
+                <?php $i = 1; foreach ($author['currentBooks'] as $book) : ?>
                     <?php if (empty($model->release_year) or (!empty($model->release_year) and $book['release_year'] == $model->release_year)) : ?>
-                        <?= $book['isbn']. ' ' . $book['name']. ' ' . $book['release_year'].'</br>'; ?>
+                        <?= $i++ .'. ' . $book['isbn']. ' ' . $book['name']. ' ' . $book['release_year'].'</br>'; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </td>
