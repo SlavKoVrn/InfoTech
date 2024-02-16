@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Book;
 use common\models\Author;
+use common\models\Subscriber;
 use frontend\models\BookSearch;
 use Yii;
 use yii\web\Controller;
@@ -45,11 +46,23 @@ class BookController extends Controller
         }
         $topAuthors = $query->asArray()->all();
 
+        $subscriber = new Subscriber;
+        if ($this->request->isPost and $subscriber->load($this->request->post()) and $subscriber->validate()) {
+            $subscriberExists = Subscriber::find()->where(['phone'=>$subscriber->phone])->one();
+            if ($subscriberExists){
+                Yii::$app->session->addFlash('warning', $subscriber->humanPhone.' Подписка уже зарегистрирована на '.$subscriber->name);
+            } elseif ($subscriber->save()) {
+                Yii::$app->session->addFlash('success', $subscriber->humanPhone.' Подписка зарегистрирована');
+            }
+            $subscriber = new Subscriber;
+        }
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'years' => $years,
             'topAuthors' => $topAuthors,
+            'subscriber' => $subscriber,
         ]);
     }
 

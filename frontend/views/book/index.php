@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Book;
+use common\models\Subscriber;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -11,12 +12,13 @@ use yii\widgets\Pjax;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 /** @var $years */
 /** @var $topAuthors */
+/** @var common\models\Subscriber $subscriber */
 
 $this->title = 'Книги';
 $this->params['breadcrumbs'][] = $this->title;
 $css=<<<CSS
-.book-view { 
-  border-radius: 15px;
+.book-view, .subscriber-view { 
+  border-radius: 20px;
   background-color: Snow;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -28,10 +30,17 @@ $css=<<<CSS
     background-color:#1c84c6;
     padding:5px;
 }
+div.help-block {
+    color:red;
+}
 CSS;
 $this->registerCss($css);
 ?>
 <div class="book-index">
+
+    <?php echo $this->render('subscriber', [
+        'subscriber' => $subscriber,
+    ]); ?>
 
     <?php echo $this->render('report', [
         'model' => $searchModel,
