@@ -141,7 +141,7 @@ class Book extends \yii\db\ActiveRecord
 
     public function getIsbnName()
     {
-        return $this->isbn.' '.$this->name;
+        return $this->isbn.' '.$this->name.' '.$this->release_year;
     }
 
 }

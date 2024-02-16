@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var frontend\models\BookSearch $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var $years */
 ?>
 
 <div class="book-search">
@@ -18,16 +19,26 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'isbn') ?>
-
-    <?= $form->field($model, 'release_year') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Сброс', ['class' => 'btn btn-outline-secondary','onclick' => 'document.location.href=\'/\';']) ?>
+    <div class="row">
+        <div class="col col-sm-3">
+            <?= $form->field($model, 'name') ?>
+        </div>
+        <div class="col col-sm-3">
+            <?= $form->field($model, 'isbn') ?>
+        </div>
+        <div class="col col-sm-3">
+            <?= $form->field($model, 'release_year')->dropDownList($years) ?>
+        </div>
+        <div class="col col-sm-3">
+            <div class="form-group">
+                <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
+                <?= Html::resetButton('Сброс', ['class' => 'btn btn-outline-secondary','onclick' => 'document.location.href=\'/\';']) ?>
+            </div>
+        </div>
     </div>
+
+
+
 
     <?php ActiveForm::end(); ?>
 

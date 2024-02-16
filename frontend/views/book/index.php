@@ -9,6 +9,8 @@ use yii\widgets\Pjax;
 /** @var yii\web\View $this */
 /** @var frontend\models\BookSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
+/** @var $years */
+/** @var $topAuthors */
 
 $this->title = 'Книги';
 $this->params['breadcrumbs'][] = $this->title;
@@ -31,10 +33,19 @@ $this->registerCss($css);
 ?>
 <div class="book-index">
 
+    <?php echo $this->render('report', [
+        'model' => $searchModel,
+        'topAuthors' => $topAuthors,
+        'years' => $years,
+    ]); ?>
+
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php Pjax::begin(['timeout'=>0]); ?>
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', [
+        'model' => $searchModel,
+        'years' => $years,
+    ]); ?>
 
     <?= ListView::widget([
         'dataProvider' => $dataProvider,

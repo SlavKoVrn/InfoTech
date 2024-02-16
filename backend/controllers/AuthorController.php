@@ -145,7 +145,7 @@ class AuthorController extends Controller
         $out = ['results' => ['id' => '', 'text' => '']];
         if (!is_null($q)) {
             $query = (new Query)
-                ->select('id, CONCAT_WS(" " ,`isbn`,`name`) AS text')
+                ->select('id, CONCAT_WS(" " ,`isbn`,`name`,`release_year`) AS text')
                 ->from('books')
                 ->where(['like', 'isbn', $q])
                 ->orWhere(['like', 'name', $q]);

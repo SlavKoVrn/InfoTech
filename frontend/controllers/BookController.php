@@ -3,10 +3,13 @@
 namespace frontend\controllers;
 
 use common\models\Book;
+use common\models\Author;
 use frontend\models\BookSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -20,12 +23,33 @@ class BookController extends Controller
      */
     public function actionIndex()
     {
+        $years = Book::find()
+            ->distinct('release_year')
+            ->orderBy('release_year DESC')
+            ->all();
+        $years = ArrayHelper::map($years,'release_year','release_year');
+        $years = ArrayHelper::merge([''=>'Весь период'],$years);
+
         $searchModel = new BookSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+
+        $query = Author::find()
+            ->select(['authors.id', 'authors.fio', 'COUNT(books.id) as book_count'])
+            ->innerJoinWith('currentBooks')
+            ->groupBy('authors.id')
+            ->orderBy('book_count DESC')
+            ->limit(10);
+
+        if ($searchModel->release_year ?? false){
+            $query->andWhere(['books.release_year' => $searchModel->release_year]);
+        }
+        $topAuthors = $query->asArray()->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'years' => $years,
+            'topAuthors' => $topAuthors,
         ]);
     }
 
