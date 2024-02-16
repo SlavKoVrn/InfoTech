@@ -6,7 +6,6 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Book $model */
 
-$this->title = $model->name;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="book-view">
