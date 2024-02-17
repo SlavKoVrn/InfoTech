@@ -39,6 +39,7 @@
                     ['label' => 'Авторы', 'url' => '/admin/author', 'icon' => 'th'],
                     ['label' => 'Подписчики', 'url' => '/admin/subscriber', 'icon' => 'th'],
                     ['label' => 'Поступление книг', 'url' => '/admin/receipt', 'icon' => 'th'],
+                    ['label' => 'СМС', 'url' => '/admin/sms', 'icon' => 'th'],
                     [
                         'label' => 'Starter Pages',
                         'icon' => 'tachometer-alt',
