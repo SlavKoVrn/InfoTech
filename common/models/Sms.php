@@ -20,10 +20,12 @@ class Sms extends \yii\db\ActiveRecord
 {
     const STATUS_SEND = 'send';
     const STATUS_NOT_SEND = 'not_send';
+    const STATUS_ERROR = 'error';
 
     public $statuses = [
         self::STATUS_SEND => 'Доставлено',
         self::STATUS_NOT_SEND => 'К Доставке',
+        self::STATUS_ERROR => 'Ошибка',
     ];
 
     public static function getStatusesArray()
@@ -31,6 +33,7 @@ class Sms extends \yii\db\ActiveRecord
         return [
             self::STATUS_SEND => 'Доставлено',
             self::STATUS_NOT_SEND => 'К Доставке',
+            self::STATUS_ERROR => 'Ошибка',
         ];
     }
 

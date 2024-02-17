@@ -14,6 +14,9 @@ use yii\widgets\Pjax;
 $this->title = 'СМС';
 $this->params['breadcrumbs'][] = $this->title;
 $css =<<<CSS
+tr.warning{
+    background-color:#fcf8e3 !important;
+}
 tr.danger{
     background-color:#f2dede !important;
 }
@@ -32,6 +35,9 @@ $this->registerCss($css);
         'filterModel' => $searchModel,
         'rowOptions' => function($model){
             if($model->status == Sms::STATUS_NOT_SEND){
+                return ['class' => 'warning'];
+            }
+            if($model->status == Sms::STATUS_ERROR){
                 return ['class' => 'danger'];
             }
             if ($model->status == Sms::STATUS_SEND){
