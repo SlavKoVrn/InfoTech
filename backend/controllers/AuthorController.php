@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Author;
 use common\models\AuthorSearch;
+use common\helpers\Helper;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
@@ -141,19 +142,7 @@ class AuthorController extends Controller
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $q = Yii::$app->request->get('q');
-        $out = ['results' => ['id' => '', 'text' => '']];
-        if (!is_null($q)) {
-            $query = (new Query)
-                ->select('id, CONCAT_WS(" " ,`isbn`,`name`,`release_year`) AS text')
-                ->from('books')
-                ->where(['like', 'isbn', $q])
-                ->orWhere(['like', 'name', $q]);
-            $command = $query->createCommand();
-            $data = $command->queryAll();
-            $out['results'] = array_values($data);
-        }
-        return $out;
+        return Helper::findBooksBySubstring(Yii::$app->request->get('q'));
     }
 
 }

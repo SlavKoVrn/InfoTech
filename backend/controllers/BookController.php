@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use common\models\Book;
 use common\models\BookSearch;
-
+use common\helpers\Helper;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -186,18 +186,7 @@ class BookController extends Controller
 
         Yii::$app->response->format = Response::FORMAT_JSON;
 
-        $q = Yii::$app->request->get('q');
-        $out = ['results' => ['id' => '', 'text' => '']];
-        if (!is_null($q)) {
-            $query = (new Query)
-                ->select('id, fio AS text')
-                ->from('authors')
-                ->where(['like', 'fio', $q]);
-            $command = $query->createCommand();
-            $data = $command->queryAll();
-            $out['results'] = array_values($data);
-        }
-        return $out;
+        return Helper::findAuthorsBySubstring(Yii::$app->request->get('q'));
     }
 
 }
