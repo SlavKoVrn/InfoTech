@@ -5,6 +5,9 @@ namespace backend\controllers;
 use common\models\Author;
 use common\models\Book;
 use common\models\BookAuthor;
+use common\models\Sms;
+use common\models\Subscriber;
+
 use Yii;
 use yii\web\Controller;
 use Faker\Factory;
@@ -56,6 +59,24 @@ class ReceiptController extends Controller
             ->where(['in','books.id',$newBooks])
             ->asArray()
             ->all();
+
+        foreach ($receiptBooks as $book){
+            foreach ($book['currentAuthors'] as $author){
+                $subscribers = Subscriber::find()
+                    ->innerJoinWith('currentAuthors')
+                    ->where([Author::tableName().'.id' => $author['id']])
+                    ->all();
+                foreach ($subscribers as $subscriber){
+                    $sms = new Sms;
+                    $sms->setAttributes([
+                        'subscriber_id' => $subscriber->id,
+                        'phone' => $subscriber->phone,
+                        'text' => 'Поступление книги '.$book['name'].' автора '.$author['fio'],
+                    ]);
+                    $sms->save();
+                }
+            }
+        }
 
         return $this->render('index',['receiptBooks' => $receiptBooks]);
     }
