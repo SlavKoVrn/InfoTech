@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Subscriber;
+use common\helpers\Helper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -31,7 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'phone',
                 'content' => function($model){
-                    return $model->humanPhone;
+                    return Helper::humanPhone($model->phone);
+                }
+            ],
+            [
+                'label'=>'Авторы',
+                'content'=>function($model){
+                    return implode('<br/>',$model->getAuthorkNames());
                 }
             ],
             [

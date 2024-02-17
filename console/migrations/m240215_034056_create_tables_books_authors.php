@@ -60,6 +60,11 @@ class m240215_034056_create_tables_books_authors extends Migration
      */
     public function safeDown()
     {
+        $this->dropForeignKey('fk-book_author-book_id', '{{%book_author}}');
+        $this->dropForeignKey('fk-book_author-author_id', '{{%book_author}}');
+        $this->dropIndex('idx-book_author-book_id', '{{%book_author}}');
+        $this->dropIndex('idx-book_author-author_id', '{{%book_author}}');
+
         $this->dropTable('{{%book_author}}');
         $this->dropTable('{{%books}}');
         $this->dropTable('{{%authors}}');

@@ -22,6 +22,9 @@ $css=<<<CSS
         background-color:#1c84c6;
         padding:5px;
     }
+    div.help-block {
+        color:red;
+    }
 CSS;
 $this->registerCSS($css);
 ?>

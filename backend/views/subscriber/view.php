@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\Helper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -32,7 +33,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'phone',
                 'value' => function($model){
-                    return $model->humanPhone;
+                    return Helper::humanPhone($model->phone);
+                }
+            ],
+            [
+                'format'=>'raw',
+                'label'=>'Авторы',
+                'value'=>function($model){
+                    return implode('<br/>',$model->getAuthorkNames());
                 }
             ],
         ],

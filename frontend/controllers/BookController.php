@@ -6,11 +6,13 @@ use common\models\Book;
 use common\models\Author;
 use common\models\Subscriber;
 use frontend\models\BookSearch;
+use common\helpers\Helper;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\Response;
 
 /**
  * BookController implements the CRUD actions for Book model.
@@ -48,12 +50,19 @@ class BookController extends Controller
 
         $subscriber = new Subscriber;
         if ($this->request->isPost and $subscriber->load($this->request->post()) and $subscriber->validate()) {
-            $subscriberExists = Subscriber::find()->where(['phone'=>$subscriber->phone])->one();
+            /**
+             * @var \common\models\Subscriber $subscriberExists
+             */
+            $subscriberExists = Subscriber::find()->where(['phone' => $subscriber->phone])->one();
             if ($subscriberExists){
-                Yii::$app->session->addFlash('warning', $subscriber->humanPhone.' Подписка уже зарегистрирована на '.$subscriberExists->name);
-            } elseif ($subscriber->save()) {
-                Yii::$app->session->addFlash('success', $subscriber->humanPhone.' Подписка зарегистрирована');
+                $subscriberExists->load($this->request->post());
+                $subscriberExists->save();
+                $message = $subscriberExists->subscribeMessage();
+            }else{
+                $subscriber->save();
+                $message = $subscriber->subscribeMessage();
             }
+            Yii::$app->session->addFlash('success', $message);
             $subscriber = new Subscriber;
         }
 
