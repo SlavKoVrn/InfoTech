@@ -117,7 +117,8 @@ class Subscriber extends \yii\db\ActiveRecord
 
     public function subscribeMessage()
     {
+        $authors = $this->getAuthorkNames();
         return Helper::humanPhone($this->phone).' '.$this->name.'<br/>Подписка зарегистрирована на авторов <br/>'.
-            implode('<br/>',$this->getAuthorkNames());
+            implode('<br/>',$authors);
     }
 }
