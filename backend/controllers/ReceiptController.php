@@ -71,7 +71,7 @@ class ReceiptController extends Controller
                     $sms->setAttributes([
                         'subscriber_id' => $subscriber->id,
                         'phone' => $subscriber->phone,
-                        'text' => 'Поступление книги '.$book['name'].' автора '.$author['fio'],
+                        'text' => 'Поступление книги '.$book['isbn'].' '.$book['name'].' '.$book['release_year'].' автора '.$author['fio'],
                     ]);
                     $sms->save();
                 }

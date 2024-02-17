@@ -64,7 +64,7 @@ class SmsSearch extends Sms
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'status', $this->status])
+        $query->andFilterWhere(['status' => $this->status])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'text', $this->text]);
 
