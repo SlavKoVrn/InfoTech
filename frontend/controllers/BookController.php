@@ -38,7 +38,13 @@ class BookController extends Controller
 
         $query = Author::find()
             ->select(['authors.id', 'authors.fio', 'COUNT(books.id) as book_count'])
-            ->innerJoinWith('currentBooks')
+            ->innerJoinWith([
+                'currentBooks' => function ($query) use ($searchModel){
+                    if ($searchModel->release_year){
+                        $query->andWhere(['books.release_year' => $searchModel->release_year]);
+                    }
+                }
+            ])
             ->groupBy('authors.id')
             ->orderBy('book_count DESC')
             ->limit(10);
